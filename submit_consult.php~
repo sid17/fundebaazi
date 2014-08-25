@@ -1,0 +1,160 @@
+<?php
+    // Configuration - Your Options
+      $allowed_filetypes = array('.jpg','.gif','.bmp','.png','.pdf'); // These will be the types of file that will pass the validation.
+      $max_filesize = 524288; // Maximum filesize in BYTES (currently 0.5MB).
+      $upload_path = 'files/'; // The place the files will be uploaded to (currently a 'files' directory).
+ 
+   $filename = $_FILES['userfile']['name']; // Get the name of the file (including file extension).
+   $ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
+
+   // Check if the filetype is allowed, if not DIE and inform the user.
+   if(!in_array($ext,$allowed_filetypes))
+      die('The file you attempted to upload is not allowed.');
+ 
+   // Now check the filesize, if it is too large then DIE and inform the user.
+   if(filesize($_FILES['userfile']['tmp_name']) > $max_filesize)
+      die('The file you attempted to upload is too large.');
+ 
+   // Check if we can upload to the specified path, if not DIE and inform the user.
+   if(!is_writable($upload_path))
+      die('You cannot upload to the specified directory, please CHMOD it to 777.');
+ 
+   // Upload the file to your specified path.
+   if(move_uploaded_file($_FILES['userfile']['tmp_name'],$upload_path . $filename))
+         echo 'Your file upload was successful, view the file <a href="' . $upload_path . $filename . '" title="Your File">here</a>'; // It worked.
+      else
+{
+         header('Location: user_bio.php?id='.$type.'&query=0');
+         die ('There was an error during the file upload.  Please try again.');
+} // It failed :(.
+ 
+?>
+
+
+<?php
+require("include/connect.php");
+?>
+<?php
+
+$foremail='';
+$forid=$_POST['id'];;
+$fromemail=$_POST['email'];
+$fromname=$_POST['firstname'];
+$fromphone=$_POST['phone'];
+$querytype=$_POST['select'];
+$stdate = date('Y-m-d H:i:s');
+$message=$_POST['message'];
+$result=mysql_query("SELECT email FROM data_base where id=".$forid,$connection);
+if (!$result)
+{
+//header('Location: user_bio.php?id='.$forid.'&query=0');
+die("database query11 failed:".mysql_error());
+}
+
+while ($row=mysql_fetch_array($result))
+{
+   $foremail=$row['email']; 
+    
+}
+
+
+echo $foremail;
+echo $fromemail;
+$sql ="INSERT INTO conversations(foremail,fromemail,fromname,forid,fromphone,querytype,stdate) values ('$foremail','$fromemail','$fromname','$forid','$fromphone','$querytype','$stdate')";
+$retval = mysql_query( $sql, $connection );
+if(! $retval )
+{
+
+//header('Location: user_bio.php?id='.$type.'&query=0');
+  die ('Query 12failed');
+}
+else 
+{
+echo "last query id";
+$last=mysql_insert_id();
+echo $last;
+  $sql1='UPDATE data_base SET curr_requests =curr_requests + 1 where id='.$forid;
+  echo $sql1;
+  $retval1 = mysql_query( $sql1, $connection );
+  if(! $retval1)
+  {
+   die ('Query 13 failed');
+   //header('Location: user_bio.php?id='.$type.'&query=0');
+  }
+  else
+ {
+
+
+
+
+/* Post email if all other steps proceed just fine */
+
+
+
+//$htmlbody = "Hi Siddhant , you have new advice requests pending , please log in and respond \n Regards,\n Fundebaazi Team";
+$htmlbody = "<b>Hi Siddhant , you have new advice request</b> \n \n Message:".$message." \n \nPlease log in and respond \n Regards,\n Fundebaazi Team";
+//$to = "siddhantmanocha1994@gmail.com"; //Recipient Email Address
+$to=$toemail;
+$subject = "Fundebaazi.in:Request:".$querytype; //Email Subject
+$headers = "From: admin@fundebaazi.in\r\nReply-To: admin@fundebaazi.in";
+$random_hash = md5(date('r', time()));
+$headers .= "\r\nContent-Type: multipart/mixed; boundary=\"PHP-mixed-".$random_hash."\"";
+// Set your file path here
+//$attachment = chunk_split(base64_encode(file_get_contents('IITBombay.png')));
+ $attachment = chunk_split(base64_encode(file_get_contents(files/$filename)));
+
+
+//define the body of the message.
+$message = "--PHP-mixed-$random_hash\r\n"."Content-Type: multipart/alternative; boundary=\"PHP-alt-$random_hash\"\r\n\r\n";
+$message .= "--PHP-alt-$random_hash\r\n"."Content-Type: text/plain; charset=\"iso-8859-1\"\r\n"."Content-Transfer-Encoding: 7bit\r\n\r\n";
+
+
+//Insert the html message.
+$message .= $htmlbody;
+$message .="\r\n\r\n--PHP-alt-$random_hash--\r\n\r\n";
+
+
+//include attachment
+$message .= "--PHP-mixed-$random_hash\r\n"."Content-Type: application/zip;name=\"logo.png\"\r\n"."Content-Transfer-Encoding:base64\r
+\n"."Content-Disposition: attachment\r\n\r\n";
+
+$message .= $attachment;
+$message .= "/r/n--PHP-mixed-$random_hash--";
+
+
+//send the email
+//$mail = mail( $to, $subject , $message, $headers );
+
+echo $mail ? "Mail sent" : "Mail failed";
+
+
+
+
+/* this is the end of the mail section */
+
+
+
+
+
+echo $toemail;
+echo $fromemail;
+echo $htmlbody;
+
+
+ //header('Location: user_bio.php?id='.$type.'&query=1'); 
+ echo "Query Successful for updation";
+ }
+  
+}
+
+mysql_close($connection);
+?>
+
+
+
+<?php
+
+?>
+
+
+

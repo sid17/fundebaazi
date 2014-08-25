@@ -1,0 +1,55 @@
+<!--
+<style>
+.messageBox {  
+width:150px;  
+padding:10px;  
+border:1px solid #666;  
+position:fixed; rightright:2%;  
+top:2%;  
+z-index:999;  
+-webkit-border-radius: 6px; -moz-border-radius: 6px;}  
+</style>
+<div class="messageBox" id='msg_1' style="position:fixed;left:40%;top:3%;display:none">Here we say something very important!</div>  
+<button onclick="abc()">click</button>
+<script src="http://code.jquery.com/jquery-latest.js"></script>  
+ <script>  
+function abc()
+{
+		$('#msg_1').show();
+		document.getElementById('msg_1').innerHTML='logged in successfully';
+	setTimeout(function() {  
+$('.messageBox').fadeOut('fast');  
+}, 1000); // <-- time in milliseconds  
+}
+</script>  -->
+
+
+<style>
+.messageBox {  
+width:150px;  
+padding:10px;  
+border:1px solid #666;  
+position:fixed; rightright:2%;  
+top:2%;  
+z-index:999;  
+-webkit-border-radius: 6px; -moz-border-radius: 6px;}  
+</style>
+<div class="messageBox" id='msg_1' style="position:fixed;left:40%;top:3%;display:none">Here we say something very important!</div>  
+<button onclick="clicked()">click</button>
+<script src="http://code.jquery.com/jquery-latest.js"></script>  
+ <script>  
+ function display_message(my_message)
+{
+    document.getElementById('msg_1').innerHTML=my_message;
+    $('#msg_1').show();
+    setTimeout(function() {  
+    $('.messageBox').fadeOut('fast');  
+    }, 1000); // <-- time in milliseconds  
+}
+</script>
+<script >
+function clicked()
+{
+	display_message('hello world');
+}
+</script>   

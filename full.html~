@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Full featured example</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<script type="text/javascript" src="js/jscripts/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="js/inc_tinymec.js"></script>
+</head>
+<body>
+	<form action="upload_bio.php" method="post" enctype="multipart/form-data">
+		<h1> ADD NAME </h1>
+		<input type="text" name="name" placeholder="Name"><br>
+		<h1> ADD PROFILE PHOTO </h1>
+	   	<p>
+	      	<label for="file">Select a file:</label> <input type="file" name="userfile" id="file"> <br />
+	      	<p>
+	<h1>ADD COMPLETE BIO</h1>
+		<div>
+			<textarea id="bio" name="bio" rows="15" cols="80" style="width: 80%">
+				
+			</textarea>
+		</div>
+		<!--<a href="javascript:;" onclick="alert(tinyMCE.get('bio').getContent());return false;">[Get contents]</a>-->
+	<h1>ADD SUMMARY</h1>
+		<div>
+			<textarea id="summary" name="summary" rows="15" cols="80" style="width: 80%">
+				
+			</textarea>
+		</div>	
+	<br>
+	<br>
+	<button>Upload information</button>
+	</form>
+	
+
+	
+	
+
+</body>
+</html>

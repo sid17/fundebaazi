@@ -1,0 +1,48 @@
+<?php
+require("include/connect.php");
+?>
+<?php
+ob_start();
+?>
+<?php
+
+$id=$_POST['id'];
+$name=$_POST['name'];
+
+
+$sql ="Select fromemail,foremail from conversations where id=".$id;
+
+$retval = mysql_query( $sql, $connection );
+if(! $retval )
+{
+
+
+echo 0;
+
+ }
+else 
+{
+
+
+while ($row=mysql_fetch_array($retval))
+{
+  if ($row['fromemail']==$name)
+	{
+		echo $row['foremail'];
+	}
+ else if  ($row['foremail']==$name) 
+	{
+		echo $row['fromemail'];
+	}
+else
+	{
+		echo 0;
+	}
+   
+}
+
+	
+}
+mysql_close($connection);
+?>
+

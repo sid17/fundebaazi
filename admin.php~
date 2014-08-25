@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Full featured example</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<script type="text/javascript" src="js/jscripts/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="js/inc_tinymec.js"></script>
+<script src="js/jquery-1.9.1.js"></script>
+</head>
+<body>
+	<form action="upload_bio.php" method="post" enctype="multipart/form-data">
+		<h1> ADD NAME </h1>
+		<input type="text" name="name" placeholder="Name"><br>
+		<h1> ADD PROFILE PHOTO </h1>
+	   	<p>
+	      	<label for="file">Select a file:</label> <input type="file" name="userfile" id="file"> <br />
+	      	<p>
+	<h1>ADD COMPLETE BIO</h1>
+		<div>
+			<textarea id="bio" name="bio" rows="15" cols="80" style="width: 80%">
+				
+			</textarea>
+		</div>
+		<!--<a href="javascript:;" onclick="alert(tinyMCE.get('bio').getContent());return false;">[Get contents]</a>-->
+	<h1>ADD SUMMARY</h1>
+		<div>
+			<textarea id="summary" name="summary" rows="15" cols="80" style="width: 80%">
+				
+			</textarea>
+		</div>	
+	<br>
+	<br>
+	<button>Upload information</button>
+
+	<?php
+	require("include/connect.php");
+
+	$result=mysql_query("SELECT * FROM tags",$connection);
+	if (!$result)
+	die("database query failed:".mysql_error());
+	
+
+	echo '<div id=""tag_cat1"><h3>Category1</h3></div>';
+	
+	while ($row=mysql_fetch_array($result))
+	{
+	 /* CATEGORY 1 */
+   
+	global $string1;
+ 	$string1= $row['cat1'];
+	$string1 = preg_replace('/\.$/', '', $string1); //Remove dot at end if exists
+	$array = explode(',@!', $string1); //split string into array seperated by ', '
+	foreach($array as $value) //loop over values
+	{
+    		echo '<li class="input checkbox"><input type="checkbox" class="search-enable" name="'.$value.'"';
+        	echo  'value="1" id="expert-search-category-1" /><label for="expert-search-category-1">'.$value.'</label></li>';
+	}
+	
+	echo '</div>';
+	/* CATEGORY 2 */
+	echo '<div id=""tag_cat2"><h3>Category2</h3></div>';
+	global $string2;
+ 	$string2= $row['cat2'];
+	$string2 = preg_replace('/\.$/', '', $string2); //Remove dot at end if exists
+	$array = explode(',@!', $string2); //split string into array seperated by ', '
+	foreach($array as $value) //loop over values
+	{
+    		echo '<li class="input checkbox"><input type="checkbox" class="search-enable" name="'.$value.'"';
+        	echo  'value="1" id="expert-search-category-1" /><label for="expert-search-category-1">'.$value.'</label></li>';
+	}
+	echo '</div>';
+	/* CATEGORY 3 */
+	echo '<div id=""tag_cat3"><h3>Category3</h3></div>';
+	global $string3;
+ 	$string3= $row['cat3'];
+	$string3 = preg_replace('/\.$/', '', $string3); //Remove dot at end if exists
+	$array = explode(',@!', $string3); //split string into array seperated by ', '
+	foreach($array as $value) //loop over values
+	{
+    		echo '<li class="input checkbox"><input type="checkbox" class="search-enable" name="'.$value.'"';
+        	echo  'value="1" id="expert-search-category-1" /><label for="expert-search-category-1">'.$value.'</label></li>';
+	}
+	echo '</div>';
+	/* CATEGORY 4 */
+	echo '<div id=""tag_cat4"><h3>Category4</h3></div>';
+	global $string4;
+ 	$string4= $row['cat4'];
+	$string4 = preg_replace('/\.$/', '', $string4); //Remove dot at end if exists
+	$array = explode(',@!', $string4); //split string into array seperated by ', '
+	foreach($array as $value) //loop over values
+	{
+    		echo '<li class="input checkbox"><input type="checkbox" class="search-enable" name="'.$value.'"';
+        	echo  'value="1" id="expert-search-category-1" /><label for="expert-search-category-1">'.$value.'</label></li>';
+	}
+
+	}
+	echo '</div>';
+
+	
+
+	
+	/*if ($flag==0)
+	{
+	 $sql ="INSERT INTO data_base(name, bio,summary,image) values ('$name','$bio','$summary','$filename')";
+	$retval = mysql_query( $sql, $connection );
+	if(! $retval )
+	{
+	  die('Could not enter data: ' . mysql_error());
+	}
+	else 
+	{
+	echo "data entered successfully";
+	}
+	}
+	else
+	{
+	 echo "username already exists";
+	}*/
+	mysql_close($connection);
+	?>
+
+<div id='update_tags'>	
+<h3>Add  Tags</h3>
+<div id="tags">
+<p>Category</p><br>
+<input type="radio" id="t1" name="tags" value="category1"> Category1
+<input type="radio" id="t2" name="tags" value="category2"> Category2
+<input type="radio" id="t3" name="tags" value="category3" > Category3
+<input type="radio" id="t3" name="tags" value="category4" > Category4
+</div>
+<p>Tag Name</p><br>
+<input type="text" id="tag_name" placeholder="TagName"><br>
+<button type="button" onclick="update_tags()">Add Tags</button>
+</div>
+
+
+	</form>
+
+<script>
+function update_tags()
+{
+	var tag =  get_radio_value();
+	var name=document.getElementById('tag_name').value;
+        var data=tag+',!@'+name;
+if (tag=='category1')
+{
+	var x="<?php echo $string1; ?>"+',@!'+name;
+	var query="UPDATE `tags` SET `cat1`='"+x+"' WHERE 1";
+	alert(query);
+	console.log(query);
+}
+else if (tag=='category2')
+{
+	var x="<?php echo $string2; ?>"+',@!'+name;
+	var query="UPDATE `tags` SET `cat2`='"+x+"' WHERE 1";
+	alert(query);
+}
+else if (tag=='category3')
+{
+	var x="<?php echo $string3; ?>"+',@!'+name;
+	var query="UPDATE `tags` SET `cat3`='"+x+"' WHERE 1";
+	alert(query);
+}
+else if (tag=='category4')
+{
+	var x="<?php echo $string4; ?>"+',@!'+name;
+	var query="UPDATE `tags` SET `cat4`='"+x+"' WHERE 1";
+	alert(query);
+}
+	
+	
+	
+	
+	/*$.ajax
+	({
+		type: "POST",
+		 url: "add_tag.php",
+		data: query
+  		
+	})
+	.done(function(msg2) 
+	{
+	console.log(msg2);
+	
+	});*/
+
+
+	$.ajax
+	({
+		type: "POST",
+		url: "add_tag.php",
+		data: { data:query,column:name }
+	})
+	.done(function(msg2) 
+	{
+	alert(msg2);
+	parse_results(msg2)
+	});
+
+
+	/*var arr = {query:query, column:name};
+	$.ajax
+	({
+	    url: "add_tag.php",
+	    type: 'POST',
+	    data: JSON.stringify(arr),
+	    contentType: 'application/json; charset=utf-8',
+	    dataType: 'json'
+	    
+	    
+	})
+	.done(function(msg2) 
+	{
+		alert("hello");
+	});*/
+}
+
+function get_radio_value() {
+            var inputs = document.getElementsByName("tags");
+            for (var i = 0; i < inputs.length; i++) {
+              if (inputs[i].checked) {
+                return inputs[i].value;
+              }
+            }
+          }
+</script>
+
+</body>
+</html>
