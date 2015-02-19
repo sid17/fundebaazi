@@ -15,10 +15,10 @@ function generateRandomString($length = 10) {
 <?php
 function forgotmail($toemail,$randomstr)
 {
-$htmlbody = "Password reset string is ".$randomstr."<br> please log in at the following link to continue and respond www.fundebaazi.in/resetpassword.php";
+$htmlbody = "Password reset string is ".$randomstr."<br> please log in at the following link to continue and respond localhost/dropbox/resetpassword.php";
 $to = $toemail; //Recipient Email Address
-$subject = "Reset Password : fundebaazi.in"; //Email Subject
-$headers = "From: admin@fundebaazi.in\r\nReply-To: admin@fundebaazi.in";
+$subject = "Reset Password : dropboxiit.in"; //Email Subject
+$headers = "From: admin@dropboxiitk.in\r\nReply-To: admin@dropboxiitk.in";
 $random_hash = md5(date('r', time()));
 $headers .= "\r\nContent-Type: multipart/mixed; boundary=\"PHP-mixed-".$random_hash."\"";
 
@@ -35,7 +35,6 @@ $mail = mail( $to, $subject , $message, $headers );
 return $mail ? 1 : 0;
 }
 ?>
-
 
 <?php
 require("include/connect.php");
